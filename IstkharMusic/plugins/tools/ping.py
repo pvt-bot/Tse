@@ -1,6 +1,5 @@
 from datetime import datetime
 from pyrogram.types import Message
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
 from config import *
 from IstkharMusic import app
 from IstkharMusic.core.call import Istu
@@ -16,30 +15,34 @@ from IstkharMusic.misc import SUDOERS
 @language
 async def ping_com(client, message: Message, _):
     start = datetime.now()
+
     response = await message.reply_photo(
-        has_spoiler=True ),
         photo="https://files.catbox.moe/leaexg.jpg",
         caption=_["ping_1"].format(app.mention),
-    ),
+    )
+
     pytgping = await Istu.ping()
     UP, CPU, RAM, DISK = await bot_sys_stats()
     resp = (datetime.now() - start).microseconds / 1000
-    await response.edit_text(
+
+    await response.edit_caption(
         _["ping_2"].format(resp, app.mention, UP, RAM, CPU, DISK, pytgping),
         reply_markup=supp_markup(_),
-    
-),
+    )
 
-@app.on_message(filters.command(["eco", "co"], prefixes=["/", "e", "E"]) & filters.reply & filters.user(list(SUDOERS)))
+
+@app.on_message(
+    filters.command(["eco", "co"], prefixes=["/", "e", "E"])
+    & filters.reply
+    & filters.user(list(SUDOERS))
+)
 async def eco_reply(client: Client, message):
 
-    if not message.reply_to_message:
-        await message.reply("**⋟ ᴘʟᴇᴀsᴇ ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ's ᴍᴇssᴀɢᴇ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.**")
-        return
-      
     command_parts = message.text.split(" ", 1)
     if len(command_parts) < 2:
-        await message.reply("**⋟ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴍᴇssᴀɢᴇ ᴀғᴛᴇʀ** `/eco` **ᴄᴏᴍᴍᴀɴᴅ.**")
+        await message.reply(
+            "**⋟ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴍᴇssᴀɢᴇ ᴀғᴛᴇʀ** `/eco` **ᴄᴏᴍᴍᴀɴᴅ.**"
+        )
         return
 
     reply_text = command_parts[1]
